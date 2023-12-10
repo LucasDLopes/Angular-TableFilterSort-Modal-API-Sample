@@ -1,0 +1,13 @@
+modal {
+  display: none;
+}
+
+body.modal-open {
+  /* hide scrollbar of main body when modal is open*/
+  overflow: hidden;
+}
+
+.modal-background{
+    width:300vh;
+    height:300vh;
+}
