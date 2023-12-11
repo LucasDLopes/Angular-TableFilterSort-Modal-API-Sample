@@ -42,7 +42,7 @@
           "configurations": {
             "github-pages": {
               "baseHref": "/FairwindsTest/"
-            }
+            },
               "production": {
                 "budgets": [
                   {
