@@ -17,6 +17,7 @@ import { state } from '@angular/animations';
 
 export class AppComponent implements OnInit {
   filterString: Array<string> = [''];
+  filtersUsed: number = 1;
   currentFilterValue: string = '';
   filteredUserList: Array<any> =[];
   sortOrder: number = 1; //positive for UP, negative for DOWN
@@ -39,8 +40,10 @@ export class AppComponent implements OnInit {
   };
   userList: Array<FairwindsMockUser> = [];
   newUserForm: any;
+  filterForm: any;
   constructor(private formBuilder: FormBuilder, protected modalService: ModalServiceComponent, protected mockApiService: MockApiServiceComponent, private datePipe: DatePipe) {
     this.createNewUserForm();
+    this.createNewFilterForm();
   }
   public get StateEnum() {
     return StateList;
@@ -64,8 +67,8 @@ export class AppComponent implements OnInit {
         this.userList.push(loadUser);
       });
       this.loading = false;
-      this.determineFilteredList();
-      this.createFilterList();
+
+      this.createFilterList(this.filterForm.value);
     });
   }
 
@@ -99,6 +102,14 @@ export class AppComponent implements OnInit {
         this.patternWithMessage(/^[0-9]*$/, 'Phone number may only contain digits'),
         Validators.minLength(9)
       ]),
+    });
+  }
+
+  createNewFilterForm() {
+    this.filterForm = new FormGroup({
+      filter0: new FormControl('', []),
+      filter1: new FormControl('', []),
+      filter2: new FormControl('', [])
     });
   }
 
@@ -177,8 +188,7 @@ export class AppComponent implements OnInit {
       this.mockApiService.saveUser(newUser).subscribe(val => {
         if (val == 201) {
           this.userList.push(newUser);
-          this.determineFilteredList();
-          this.createFilterList();
+          this.createFilterList(this.filterForm.value);
           this.sortOrder = 1;
           this.modalService.close();
         } else {
@@ -188,26 +198,38 @@ export class AppComponent implements OnInit {
     }
   }
 
+  /**
+   * called by filter modal to add another filter Option
+   */
   addFilterOption() {
-    this.filterString.push('');
-
+    this.filtersUsed++;
   }
+
+  /**
+   * called by filter modal to REMOVE last filter option
+   */
   removeFilterOption() {
-    this.filterString.pop();
-    this.createFilterList();
+    this.filtersUsed--;
+    this.createFilterList(this.filterForm.value);
   }
 
-  closeFilterModal() {
-
-    //Call determineFilteredList (modify code to instead loop through the array of filter)
-
-    this.createFilterList();
+  /**
+   * Function called by submit of filter modal
+   * @param filterValues
+   */
+  closeFilterModal(filterValues:any) {
+    this.createFilterList(filterValues);
     this.modalService.close();
   }
 
   clearFilter() {
     this.filterString = [''];
-    this.createFilterList();
+    this.filtersUsed = 1;
+    this.filterForm.value['filter0'] = '';
+    this.filterForm.value['filter1'] = '';
+    this.filterForm.value['filter2'] = '';
+    this.createNewFilterForm();
+    this.createFilterList(this.filterForm.value);
   }
 
 
@@ -253,8 +275,7 @@ export class AppComponent implements OnInit {
         sortList = this.userList.sort((this.dynamicSort(property)));
       }
       this.userList = sortList;
-    this.determineFilteredList();
-    this.createFilterList();
+    this.createFilterList(this.filterForm.value);
       this.sortOrder = this.sortOrder * -1;
   }
 
@@ -296,29 +317,30 @@ export class AppComponent implements OnInit {
    * Called everytime UserList is updated.
    * used in conjunction with filter input on template
    */
-  determineFilteredList(): void {
-    console.log('attempting to determine filtered list');
-    this.filteredUserList = [];
-    let filterCopy = this.currentFilterValue;
-    if (filterCopy = '') {
-      this.filteredUserList = this.userList;
-    } else {
-      this.userList.map(val => {
-        if (val.id.toString().includes(this.currentFilterValue) ||
-          val.firstName.toLowerCase().includes(this.currentFilterValue.toLowerCase()) ||
-          val.lastName.toLowerCase().includes(this.currentFilterValue.toLowerCase()) ||
-          val.age.toString().includes(this.currentFilterValue) ||
-          (val.dob && val.dob.toString().includes(this.currentFilterValue)) ||
-            (val.ssn && val.ssn.substr(val.ssn.length - 4).includes(this.currentFilterValue))) {
-          this.filteredUserList.push(val);
-        }
-      })
-    }
-  }
-
-  createFilterList(): void {
+  createFilterList(filterValues: any): void {
+    console.log(filterValues);
     this.filteredUserList = this.userList;
-    if (this.filterString.length == 1 && this.filterString[0] == '') {
+    this.filterString = ['','',''];
+    if (filterValues) {
+      if (filterValues.filter0 != '') {
+        this.filterString[0] = filterValues.filter0;
+      }
+      if (filterValues.filter1 != '') {
+        this.filterString[1] = filterValues.filter1;
+      }
+      if (filterValues.filter2 != '') {
+        this.filterString[2] = filterValues.filter2;
+      }
+    }
+    let removeBlanks: Array<string>= [];
+    this.filterString.map(filter => {
+      if (filter != '' && filter !=undefined) {
+        removeBlanks.push(filter);
+      }
+    });
+    this.filterString = removeBlanks;
+    
+    if (this.filterString.length==0) {
     } else {
       //Loop through the filterString array
       this.filterString.map(filter => {

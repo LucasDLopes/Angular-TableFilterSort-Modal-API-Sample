@@ -17,399 +17,412 @@
     <!--main display table-->
     <div class="d-flex flex-column justify-content-center m-2">
 
-
-      <button *ngIf="!loading" class="btn btn-primary my-2" (click)="filterModalOpen()">Filter By</button>
-      <button *ngIf="!loading" class="btn btn-secondary" (click)="clearFilter()">Clear Filters</button>
-
-      <!--<input pInputText [(ngModel)]="currentFilterValue" (input)="determineFilteredList()" placeholder="Filter by" class="form-control" type="text" name="tableFilter">-->
-      <table class="table table-bordered my-3">
-        <thead>
-          <tr>
-            <th>
-              Customer Number
-              <!--If currentSortProperty isnt this one, just show sort up, otherwise, refer to ng-template-->
-              <button type="button" class="clear-button" (click)="sortList('id')" *ngIf="currentSortProperty!='id' else upOrDownSort">
-                <i class="bi bi-sort-up"></i>
-              </button>
-            </th>
-            <th>
-              First Name
-              <button type="button" class="clear-button" (click)="sortList('firstName')" *ngIf="currentSortProperty!='firstName' else upOrDownSort">
-                <i class="bi bi-sort-up"></i>
-              </button>
-            </th>
-            <th>
-              Last Name
-              <button type="button" class="clear-button" (click)="sortList('lastName')" *ngIf="currentSortProperty!='lastName' else upOrDownSort">
-                <i class="bi bi-sort-up"></i>
-              </button>
-            </th>
-            <th>
-              Date of Birth
-              <button type="button" class="clear-button" (click)="sortList('dob')" *ngIf="currentSortProperty!='dob' else upOrDownSort">
-                <i class="bi bi-sort-up"></i>
-              </button>
-            </th>
-            <th>
-              Age
-              <button type="button" class="clear-button" (click)="sortList('age')" *ngIf="currentSortProperty!='age' else upOrDownSort">
-                <i class="bi bi-sort-up"></i>
-              </button>
-            </th>
-            <th>
-              SSN
-            </th>
-            <!--<th> </th>-->
-          </tr>
-        </thead>
-        <tbody>
-          <tr *ngFor="let user of filteredUserList">
-            <td>{{user.id}}</td>
-            <td>{{user.firstName}}</td>
-            <td>{{user.lastName}}</td>
-            <td>{{user.dob}}</td>
-            <td>{{user.age}}</td>
-            <td *ngIf="user.ssn !=null else tdNoSSN">***-**-{{user.ssn.substr(user.ssn.length - 4)}}</td>
-            <button clear-button (click)="userDetailModalOpen(user)" style="border: hidden !important;">
-              More Details
-              <i class="bi bi-binoculars"></i>
-            </button>
-          </tr>
-        </tbody>
-      </table>
-    </div>
-    <!--modal template for USER DETAILS-->
-    <modal id="userDetails-modal">
-      <div class="modal-header">
-        <h5 class="modal-title">Details on {{currentlySelectedUser.firstName}} {{currentlySelectedUser.lastName}}</h5>
-        <button type="button" class="btn-close" (click)="modalService.close();"></button>
+      <div class="d-flex flex-column justify-content-start align-items-center my-3 mx-4">
+        <button *ngIf="!loading" class="btn btn-primary my-2" (click)="filterModalOpen()">Filter By <i class="bi bi-funnel"></i></button>
+        <button *ngIf="!loading" class="btn btn-secondary" (click)="clearFilter()">Clear Filters</button>
       </div>
-      <div class="modal-body">
-        <p class="detail-view-item">
-          <label class="key-padding">Customer ID: </label>
-          <label>{{currentlySelectedUser.id}}</label>
-          <br />
-        </p>
-        <p class="detail-view-item">
-          <label class="key-padding">First Name: </label>
-          <label>{{currentlySelectedUser.firstName}}</label>
-          <br />
-        </p>
-        <p class="detail-view-item">
-          <label class="key-padding">Last Name: </label>
-          <label>{{currentlySelectedUser.lastName}}</label>
-          <br />
-        </p>
-        <p class="detail-view-item">
-          <label class="key-padding">Date Of Birth: </label>
-          <label>{{currentlySelectedUser.dob}}</label>
+        
 
-          <br />
-        </p>
-        <p class="detail-view-item">
-          <label class="key-padding">Social Security Number: </label>
-          <label *ngIf="currentlySelectedUser.ssn !=null else noSSN">      ***-**-{{currentlySelectedUser.ssn.substr(currentlySelectedUser.ssn.length - 4)}}</label>
-          <br />
-        </p>
-        <p class="detail-view-item">
-          <label class="key-padding">age: </label>
-          <label>{{currentlySelectedUser.age}}</label>
-          <br />
-        </p>
-        <p class="detail-view-item">
-          <label class="key-padding">Email Address: </label>
-          <label *ngIf="currentlySelectedUser.emailAddress">{{currentlySelectedUser.emailAddress}}</label>
-          <label *ngIf="!currentlySelectedUser.emailAddress" class="existing-user-issue">No email on file</label>
-          <br />
-        </p>
-        <p class="detail-view-item">
-          <label class="key-padding">Primary Address: </label>
-          <label *ngIf="currentlySelectedUser.primaryAddress">{{currentlySelectedUser.primaryAddress}}</label>
-          <label *ngIf="!currentlySelectedUser.primaryAddress" class="existing-user-issue">No address on file</label>
-          <br />
-        </p>
-        <p class="detail-view-item">
-          <label class="key-padding">Mobile Phone Number: </label>
-          <label *ngIf="currentlySelectedUser.phoneNumber">{{currentlySelectedUser.phoneNumber}}</label>
-          <label *ngIf="!currentlySelectedUser.phoneNumber" class="existing-user-issue">No mobile phone number on file</label>
-          <br />
-        </p>
-        <p class="detail-view-item">
-          <label class="key-padding">Join Date: </label>
-          <label>{{currentlySelectedUser.joinDate}}</label>
-          <br />
-        </p>
+        <!--<input pInputText [(ngModel)]="currentFilterValue" (input)="determineFilteredList()" placeholder="Filter by" class="form-control" type="text" name="tableFilter">-->
+        <table class="table table-bordered my-3">
+          <thead>
+            <tr>
+              <th>
+                Customer Number
+                <!--If currentSortProperty isnt this one, just show sort up, otherwise, refer to ng-template-->
+                <button type="button" class="clear-button" (click)="sortList('id')" *ngIf="currentSortProperty!='id' else upOrDownSort">
+                  <i class="bi bi-sort-up"></i>
+                </button>
+              </th>
+              <th>
+                First Name
+                <button type="button" class="clear-button" (click)="sortList('firstName')" *ngIf="currentSortProperty!='firstName' else upOrDownSort">
+                  <i class="bi bi-sort-up"></i>
+                </button>
+              </th>
+              <th>
+                Last Name
+                <button type="button" class="clear-button" (click)="sortList('lastName')" *ngIf="currentSortProperty!='lastName' else upOrDownSort">
+                  <i class="bi bi-sort-up"></i>
+                </button>
+              </th>
+              <th>
+                Date of Birth
+                <button type="button" class="clear-button" (click)="sortList('dob')" *ngIf="currentSortProperty!='dob' else upOrDownSort">
+                  <i class="bi bi-sort-up"></i>
+                </button>
+              </th>
+              <th>
+                Age
+                <button type="button" class="clear-button" (click)="sortList('age')" *ngIf="currentSortProperty!='age' else upOrDownSort">
+                  <i class="bi bi-sort-up"></i>
+                </button>
+              </th>
+              <th>
+                SSN
+              </th>
+              <!--<th> </th>-->
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let user of filteredUserList">
+              <td>{{user.id}}</td>
+              <td>{{user.firstName}}</td>
+              <td>{{user.lastName}}</td>
+              <td>{{user.dob}}</td>
+              <td>{{user.age}}</td>
+              <td *ngIf="user.ssn !=null else tdNoSSN">***-**-{{user.ssn.substr(user.ssn.length - 4)}}</td>
+              <button clear-button (click)="userDetailModalOpen(user)" style="border: hidden !important;">
+                More Details
+                <i class="bi bi-binoculars"></i>
+              </button>
+            </tr>
+          </tbody>
+        </table>
       </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modalService.close();">Close</button>
-      </div>
-    </modal>
-
-
-    <!--modal template for ADD NEW USER-->
-    <modal id="newUser-modal">
-      <div class="modal-header">
-        <h5 class="modal-title">Add New Customer</h5>
-        <button type="button" class="btn-close" (click)="modalService.close();"></button>
-      </div>
-      <div class="modal-body">
-        <div class="error-list" *ngIf="errorList.length>0">
-          <div *ngFor="let error of errorList" class="error-item">
-            {{error}}
-          </div>
+      <!--modal template for USER DETAILS-->
+      <modal id="userDetails-modal">
+        <div class="modal-header">
+          <h5 class="modal-title">Details on {{currentlySelectedUser.firstName}} {{currentlySelectedUser.lastName}}</h5>
+          <button type="button" class="btn-close" (click)="modalService.close();"></button>
         </div>
-        <div>
-          <!--Start Form-->
-          <form [formGroup]="newUserForm" (ngSubmit)="onSubmitTemplateBased(newUserForm.value)">
-            <!--FIRST NAME-->
-            <div class="form-group">
-              <label>First Name:</label>
-              <input type="text" name="First Name" placeholder="Your FIRST name" class="form-control" formControlName="firstName" required>
-              <div *ngIf="newUserForm?.controls['firstName']?.invalid && (newUserForm.controls['firstName'].dirty || newUserForm.controls['firstName'].touched)" class="alert validation-error">
+        <div class="modal-body">
+          <p class="detail-view-item">
+            <label class="key-padding">Customer ID: </label>
+            <label>{{currentlySelectedUser.id}}</label>
+            <br />
+          </p>
+          <p class="detail-view-item">
+            <label class="key-padding">First Name: </label>
+            <label>{{currentlySelectedUser.firstName}}</label>
+            <br />
+          </p>
+          <p class="detail-view-item">
+            <label class="key-padding">Last Name: </label>
+            <label>{{currentlySelectedUser.lastName}}</label>
+            <br />
+          </p>
+          <p class="detail-view-item">
+            <label class="key-padding">Date Of Birth: </label>
+            <label>{{currentlySelectedUser.dob}}</label>
 
-                <!--FIRST NAME VALIDATIONS-->
-                <div *ngIf="newUserForm?.controls['firstName']?.errors?.required">
-                  Please enter First Name
-                </div>
-                <div *ngIf="newUserForm?.controls['firstName']?.errors?.minlength">
-                  Your first name must contain at least 2 characters
-                </div>
-                <div *ngIf="newUserForm?.controls['firstName']?.errors?.message">
-                  {{newUserForm.controls['firstName'].errors.message}}
-                </div>
-              </div>
-              <br />
-            </div>
-            <!--LAST NAME-->
-            <div class="form-group">
-              <label>Last Name:</label>
-              <input type="text" name="Last Name" class="form-control" placeholder="Your LAST name" formControlName="lastName" required>
-
-              <!--LAST NAME VALIDATIONS-->
-              <div *ngIf="newUserForm?.controls['lastName']?.invalid && (newUserForm.controls['lastName'].dirty || newUserForm.controls['lastName'].touched)" class="alert validation-error">
-                <div *ngIf="newUserForm?.controls['lastName']?.errors?.required">
-                  Please enter Last Name
-                </div>
-                <div *ngIf="newUserForm?.controls['lastName']?.errors?.minlength">
-                  Your last name must contain at least 2 characters
-                </div>
-                <div *ngIf="newUserForm?.controls['lastName']?.errors?.message">
-                  {{newUserForm.controls['lastName'].errors.message}}
-                </div>
-              </div>
-
-
-              <br />
-            </div>
-            <!--DOB-->
-            <div class="form-group">
-              <label>Date Of Birth:</label>
-
-              <input type="date" name="Date of birth" class="form-control" placeholder="Your Date Of Birth" formControlName="dob" required>
-
-              <!--DOB VALIDATIONS-->
-              <div *ngIf="newUserForm?.controls['dob']?.invalid && (newUserForm.controls['dob'].dirty || newUserForm.controls['dob'].touched)" class="alert validation-error">
-                <div *ngIf="newUserForm?.controls['dob']?.errors?.required">
-                  Please enter Date of Birth
-                </div>
-              </div>
-              <br />
-            </div>
-            <!--SSN-->
-            <div class="form-group">
-              <label>Social Security Number:</label>
-              <input type="text" name="Social Security Number" class="form-control" placeholder="Your SSN" formControlName="ssn" required>
-
-              <!--SSN VALIDATIONS-->
-              <div *ngIf="newUserForm?.controls['ssn']?.invalid && (newUserForm.controls['ssn'].dirty || newUserForm.controls['ssn'].touched)" class="alert validation-error">
-                <div *ngIf="newUserForm?.controls['ssn']?.errors?.required">
-                  Please enter your SSN
-                </div>
-                <div *ngIf="newUserForm?.controls['ssn']?.errors?.minlength">
-                  Your SSN must contain exactly 9 characters
-                </div>
-                <div *ngIf="newUserForm?.controls['ssn']?.errors?.maxlength">
-                  Your SSN must contain exactly 9 characters
-                </div>
-                <div *ngIf="newUserForm?.controls['ssn']?.errors?.message">
-                  {{newUserForm.controls['ssn'].errors.message}}
-                </div>
-              </div>
-
-              <br />
-            </div>
-            <!--EMAIL-->
-            <div class="form-group">
-              <label>Email Address:</label>
-              <input type="text" name="Email Address" class="form-control" placeholder="Your Email Address" formControlName="emailAddress" required>
-              <!--email validations-->
-              <div *ngIf="newUserForm?.controls['emailAddress']?.invalid && (newUserForm.controls['emailAddress'].dirty || newUserForm.controls['emailAddress'].touched)" class="alert validation-error">
-                <div *ngIf="newUserForm?.controls['emailAddress']?.errors?.required">
-                  Please enter your email address
-                </div>
-                <div *ngIf="newUserForm?.controls['emailAddress']?.errors?.message">
-                  {{newUserForm.controls['emailAddress'].errors.message}}
-                </div>
-              </div>
-              <br />
-            </div>
-            <!--phone number-->
-            <div class="form-group">
-              <label>Phone Number:</label>
-              <input type="text" name="phone Number" class="form-control" placeholder="Your phone number" formControlName="phoneNumber" required>
-              <!--phone number validations-->
-              <div *ngIf="newUserForm?.controls['phoneNumber']?.invalid && (newUserForm.controls['phoneNumber'].dirty || newUserForm.controls['phoneNumber'].touched)" class="alert validation-error">
-                <div *ngIf="newUserForm?.controls['phoneNumber']?.errors?.message">
-                  {{newUserForm.controls['phoneNumber'].errors.message}}
-                </div>
-                <div *ngIf="newUserForm?.controls['phoneNumber']?.errors?.minlength">
-                  Your phone number contains too few digits
-                </div>
-              </div>
-
-              <br />
-            </div>
+            <br />
+          </p>
+          <p class="detail-view-item">
+            <label class="key-padding">Social Security Number: </label>
+            <label *ngIf="currentlySelectedUser.ssn !=null else noSSN">      ***-**-{{currentlySelectedUser.ssn.substr(currentlySelectedUser.ssn.length - 4)}}</label>
+            <br />
+          </p>
+          <p class="detail-view-item">
+            <label class="key-padding">age: </label>
+            <label>{{currentlySelectedUser.age}}</label>
+            <br />
+          </p>
+          <p class="detail-view-item">
+            <label class="key-padding">Email Address: </label>
+            <label *ngIf="currentlySelectedUser.emailAddress">{{currentlySelectedUser.emailAddress}}</label>
+            <label *ngIf="!currentlySelectedUser.emailAddress" class="existing-user-issue">No email on file</label>
+            <br />
+          </p>
+          <p class="detail-view-item">
+            <label class="key-padding">Primary Address: </label>
+            <label *ngIf="currentlySelectedUser.primaryAddress">{{currentlySelectedUser.primaryAddress}}</label>
+            <label *ngIf="!currentlySelectedUser.primaryAddress" class="existing-user-issue">No address on file</label>
+            <br />
+          </p>
+          <p class="detail-view-item">
+            <label class="key-padding">Mobile Phone Number: </label>
+            <label *ngIf="currentlySelectedUser.phoneNumber">{{currentlySelectedUser.phoneNumber}}</label>
+            <label *ngIf="!currentlySelectedUser.phoneNumber" class="existing-user-issue">No mobile phone number on file</label>
+            <br />
+          </p>
+          <p class="detail-view-item">
+            <label class="key-padding">Join Date: </label>
+            <label>{{currentlySelectedUser.joinDate}}</label>
+            <br />
+          </p>
+        </div>
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="modalService.close();">Close</button>
+        </div>
+      </modal>
 
 
-
-
-            <!--Address-->
-            <!--<div class="form-group">
-        <label>Primary Address:</label>
-        <input type="text" name="Address" placeholder="Your Address" class="form-control" formControlName="primaryAddress" required>-->
-            <!--address validations-->
-            <!--<div *ngIf="newUserForm?.controls['primaryAddress']?.invalid && (newUserForm.controls['primaryAddress'].dirty || newUserForm.controls['primaryAddress'].touched)" class="alert validation-error">
-            <div *ngIf="newUserForm?.controls['primaryAddress']?.errors?.required">
-              Please enter an address
+      <!--modal template for ADD NEW USER-->
+      <modal id="newUser-modal">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Customer</h5>
+          <button type="button" class="btn-close" (click)="modalService.close();"></button>
+        </div>
+        <div class="modal-body">
+          <div class="error-list" *ngIf="errorList.length>0">
+            <div *ngFor="let error of errorList" class="error-item">
+              {{error}}
             </div>
           </div>
-          <br />
-        </div>-->
-            <!--Street Address-->
-            <div class="form-group">
-              <label>Street Address:</label>
-              <input type="text" name="Address" placeholder="Your Address" class="form-control" formControlName="streetAddress" required>
-              <!--ST address validations-->
-              <div *ngIf="newUserForm?.controls['streetAddress']?.invalid && (newUserForm.controls['streetAddress'].dirty || newUserForm.controls['streetAddress'].touched)" class="alert validation-error">
-                <div *ngIf="newUserForm?.controls['streetAddress']?.errors?.message">
-                  {{newUserForm.controls['streetAddress'].errors.message}}
+          <div>
+            <!--Start Form-->
+            <form [formGroup]="newUserForm" (ngSubmit)="onSubmitTemplateBased(newUserForm.value)">
+              <!--FIRST NAME-->
+              <div class="form-group">
+                <label>First Name:</label>
+                <input type="text" name="First Name" placeholder="Your FIRST name" class="form-control" formControlName="firstName" required>
+                <div *ngIf="newUserForm?.controls['firstName']?.invalid && (newUserForm.controls['firstName'].dirty || newUserForm.controls['firstName'].touched)" class="alert validation-error">
+
+                  <!--FIRST NAME VALIDATIONS-->
+                  <div *ngIf="newUserForm?.controls['firstName']?.errors?.required">
+                    Please enter First Name
+                  </div>
+                  <div *ngIf="newUserForm?.controls['firstName']?.errors?.minlength">
+                    Your first name must contain at least 2 characters
+                  </div>
+                  <div *ngIf="newUserForm?.controls['firstName']?.errors?.message">
+                    {{newUserForm.controls['firstName'].errors.message}}
+                  </div>
                 </div>
-                <div *ngIf="newUserForm?.controls['streetAddress']?.errors?.required">
-                  Please enter a street address
-                </div>
+                <br />
               </div>
-              <br />
-            </div>
+              <!--LAST NAME-->
+              <div class="form-group">
+                <label>Last Name:</label>
+                <input type="text" name="Last Name" class="form-control" placeholder="Your LAST name" formControlName="lastName" required>
 
-            <!--City Address-->
-            <div class="form-group">
-              <label>City:</label>
-              <input type="text" name="Address" placeholder="Your Address" class="form-control" formControlName="cityAddress" required>
-              <!--City address validations-->
-              <div *ngIf="newUserForm?.controls['cityAddress']?.invalid && (newUserForm.controls['cityAddress'].dirty || newUserForm.controls['cityAddress'].touched)" class="alert validation-error">
-                <div *ngIf="newUserForm?.controls['cityAddress']?.errors?.required">
-                  Please enter a City
+                <!--LAST NAME VALIDATIONS-->
+                <div *ngIf="newUserForm?.controls['lastName']?.invalid && (newUserForm.controls['lastName'].dirty || newUserForm.controls['lastName'].touched)" class="alert validation-error">
+                  <div *ngIf="newUserForm?.controls['lastName']?.errors?.required">
+                    Please enter Last Name
+                  </div>
+                  <div *ngIf="newUserForm?.controls['lastName']?.errors?.minlength">
+                    Your last name must contain at least 2 characters
+                  </div>
+                  <div *ngIf="newUserForm?.controls['lastName']?.errors?.message">
+                    {{newUserForm.controls['lastName'].errors.message}}
+                  </div>
                 </div>
-                <div *ngIf="newUserForm?.controls['cityAddress']?.errors?.message">
-                  {{newUserForm.controls['cityAddress'].errors.message}}
-                </div>
+
+
+                <br />
               </div>
-              <br />
+              <!--DOB-->
+              <div class="form-group">
+                <label>Date Of Birth:</label>
+
+                <input type="date" name="Date of birth" class="form-control" placeholder="Your Date Of Birth" formControlName="dob" required>
+
+                <!--DOB VALIDATIONS-->
+                <div *ngIf="newUserForm?.controls['dob']?.invalid && (newUserForm.controls['dob'].dirty || newUserForm.controls['dob'].touched)" class="alert validation-error">
+                  <div *ngIf="newUserForm?.controls['dob']?.errors?.required">
+                    Please enter Date of Birth
+                  </div>
+                </div>
+                <br />
+              </div>
+              <!--SSN-->
+              <div class="form-group">
+                <label>Social Security Number:</label>
+                <input type="text" name="Social Security Number" class="form-control" placeholder="Your SSN" formControlName="ssn" required>
+
+                <!--SSN VALIDATIONS-->
+                <div *ngIf="newUserForm?.controls['ssn']?.invalid && (newUserForm.controls['ssn'].dirty || newUserForm.controls['ssn'].touched)" class="alert validation-error">
+                  <div *ngIf="newUserForm?.controls['ssn']?.errors?.required">
+                    Please enter your SSN
+                  </div>
+                  <div *ngIf="newUserForm?.controls['ssn']?.errors?.minlength">
+                    Your SSN must contain exactly 9 characters
+                  </div>
+                  <div *ngIf="newUserForm?.controls['ssn']?.errors?.maxlength">
+                    Your SSN must contain exactly 9 characters
+                  </div>
+                  <div *ngIf="newUserForm?.controls['ssn']?.errors?.message">
+                    {{newUserForm.controls['ssn'].errors.message}}
+                  </div>
+                </div>
+
+                <br />
+              </div>
+              <!--EMAIL-->
+              <div class="form-group">
+                <label>Email Address:</label>
+                <input type="text" name="Email Address" class="form-control" placeholder="Your Email Address" formControlName="emailAddress" required>
+                <!--email validations-->
+                <div *ngIf="newUserForm?.controls['emailAddress']?.invalid && (newUserForm.controls['emailAddress'].dirty || newUserForm.controls['emailAddress'].touched)" class="alert validation-error">
+                  <div *ngIf="newUserForm?.controls['emailAddress']?.errors?.required">
+                    Please enter your email address
+                  </div>
+                  <div *ngIf="newUserForm?.controls['emailAddress']?.errors?.message">
+                    {{newUserForm.controls['emailAddress'].errors.message}}
+                  </div>
+                </div>
+                <br />
+              </div>
+              <!--phone number-->
+              <div class="form-group">
+                <label>Phone Number:</label>
+                <input type="text" name="phone Number" class="form-control" placeholder="Your phone number" formControlName="phoneNumber" required>
+                <!--phone number validations-->
+                <div *ngIf="newUserForm?.controls['phoneNumber']?.invalid && (newUserForm.controls['phoneNumber'].dirty || newUserForm.controls['phoneNumber'].touched)" class="alert validation-error">
+                  <div *ngIf="newUserForm?.controls['phoneNumber']?.errors?.message">
+                    {{newUserForm.controls['phoneNumber'].errors.message}}
+                  </div>
+                  <div *ngIf="newUserForm?.controls['phoneNumber']?.errors?.minlength">
+                    Your phone number contains too few digits
+                  </div>
+                </div>
+
+                <br />
+              </div>
+
+
+
+
+              <!--Address-->
+              <!--<div class="form-group">
+          <label>Primary Address:</label>
+          <input type="text" name="Address" placeholder="Your Address" class="form-control" formControlName="primaryAddress" required>-->
+              <!--address validations-->
+              <!--<div *ngIf="newUserForm?.controls['primaryAddress']?.invalid && (newUserForm.controls['primaryAddress'].dirty || newUserForm.controls['primaryAddress'].touched)" class="alert validation-error">
+              <div *ngIf="newUserForm?.controls['primaryAddress']?.errors?.required">
+                Please enter an address
+              </div>
             </div>
+            <br />
+          </div>-->
+              <!--Street Address-->
+              <div class="form-group">
+                <label>Street Address:</label>
+                <input type="text" name="Address" placeholder="Your Address" class="form-control" formControlName="streetAddress" required>
+                <!--ST address validations-->
+                <div *ngIf="newUserForm?.controls['streetAddress']?.invalid && (newUserForm.controls['streetAddress'].dirty || newUserForm.controls['streetAddress'].touched)" class="alert validation-error">
+                  <div *ngIf="newUserForm?.controls['streetAddress']?.errors?.message">
+                    {{newUserForm.controls['streetAddress'].errors.message}}
+                  </div>
+                  <div *ngIf="newUserForm?.controls['streetAddress']?.errors?.required">
+                    Please enter a street address
+                  </div>
+                </div>
+                <br />
+              </div>
 
-            <!--State Address-->
-            <div class="form-group">
-              <label>State:</label>
-              <!--<input type="text" name="Address" placeholder="Your Address" class="form-control" formControlName="stateAddress" required>-->
+              <!--City Address-->
+              <div class="form-group">
+                <label>City:</label>
+                <input type="text" name="Address" placeholder="Your Address" class="form-control" formControlName="cityAddress" required>
+                <!--City address validations-->
+                <div *ngIf="newUserForm?.controls['cityAddress']?.invalid && (newUserForm.controls['cityAddress'].dirty || newUserForm.controls['cityAddress'].touched)" class="alert validation-error">
+                  <div *ngIf="newUserForm?.controls['cityAddress']?.errors?.required">
+                    Please enter a City
+                  </div>
+                  <div *ngIf="newUserForm?.controls['cityAddress']?.errors?.message">
+                    {{newUserForm.controls['cityAddress'].errors.message}}
+                  </div>
+                </div>
+                <br />
+              </div>
 
-              <select class="form-control" id="exampleFormControlSelect1" formControlName="stateAddress" required>
-                <option *ngFor="let state of StateEnum| keyvalue" value="{{state.key}}">{{state.value}}</option>
-              </select>
+              <!--State Address-->
+              <div class="form-group">
+                <label>State:</label>
+                <!--<input type="text" name="Address" placeholder="Your Address" class="form-control" formControlName="stateAddress" required>-->
 
-      <!--state address validations-->
-      <div *ngIf="newUserForm?.controls['stateAddress']?.invalid && (newUserForm.controls['stateAddress'].dirty || newUserForm.controls['stateAddress'].touched)" class="alert validation-error">
-        <div *ngIf="newUserForm?.controls['stateAddress']?.errors?.required">
-          Please enter a State
+                <select class="form-control" id="exampleFormControlSelect1" formControlName="stateAddress" required>
+                  <option *ngFor="let state of StateEnum| keyvalue" value="{{state.key}}">{{state.value}}</option>
+                </select>
+
+                <!--state address validations-->
+                <div *ngIf="newUserForm?.controls['stateAddress']?.invalid && (newUserForm.controls['stateAddress'].dirty || newUserForm.controls['stateAddress'].touched)" class="alert validation-error">
+                  <div *ngIf="newUserForm?.controls['stateAddress']?.errors?.required">
+                    Please enter a State
+                  </div>
+                </div>
+                <br />
+              </div>
+
+              <!--ZIP Address-->
+              <div class="form-group">
+                <label>ZIP Code:</label>
+                <input type="text" name="Address" placeholder="Your Address" class="form-control" formControlName="zipAddress" required>
+                <!--ZIP address validations-->
+                <div *ngIf="newUserForm?.controls['zipAddress']?.invalid && (newUserForm.controls['zipAddress'].dirty || newUserForm.controls['zipAddress'].touched)" class="alert validation-error">
+                  <div *ngIf="newUserForm?.controls['zipAddress']?.errors?.required">
+                    Please enter a ZIP code
+                  </div>
+                  <div *ngIf="newUserForm?.controls['zipAddress']?.errors?.message">
+                    {{newUserForm.controls['zipAddress'].errors.message}}
+                  </div>
+                  <div *ngIf="newUserForm?.controls['zipAddress']?.errors?.minlength">
+                    Zip code should contain 5 digits
+                  </div>
+                  <div *ngIf="newUserForm?.controls['zipAddress']?.errors?.maxlength">
+                    Zip code should contain 5 digits
+                  </div>
+                </div>
+                <br />
+              </div>
+
+
+
+
+
+
+
+
+
+
+              <p>
+                <button type="submit" class="btn btn-secondary" [disabled]="!newUserForm.valid">Submit</button>
+              </p>
+            </form>
+
+
+          </div>
         </div>
-      </div>
-      <br />
-</div>
-
-            <!--ZIP Address-->
-            <div class="form-group">
-              <label>ZIP Code:</label>
-              <input type="text" name="Address" placeholder="Your Address" class="form-control" formControlName="zipAddress" required>
-              <!--ZIP address validations-->
-              <div *ngIf="newUserForm?.controls['zipAddress']?.invalid && (newUserForm.controls['zipAddress'].dirty || newUserForm.controls['zipAddress'].touched)" class="alert validation-error">
-                <div *ngIf="newUserForm?.controls['zipAddress']?.errors?.required">
-                  Please enter a ZIP code
-                </div>
-                <div *ngIf="newUserForm?.controls['zipAddress']?.errors?.message">
-                  {{newUserForm.controls['zipAddress'].errors.message}}
-                </div>
-                <div *ngIf="newUserForm?.controls['zipAddress']?.errors?.minlength">
-                  Zip code should contain 5 digits
-                </div>
-                <div *ngIf="newUserForm?.controls['zipAddress']?.errors?.maxlength">
-                  Zip code should contain 5 digits
-                </div>
-              </div>
-              <br />
-            </div>
-
-
-
-
-
-
-
-
-
-
-            <p>
-              <button type="submit" class="btn btn-secondary" [disabled]="!newUserForm.valid">Submit</button>
-            </p>
-          </form>
-
-
+        <div class="modal-footer">
+          <button type="button" class="btn btn-secondary" (click)="modalService.close();">Cancel</button>
         </div>
-      </div>
-      <div class="modal-footer">
-        <button type="button" class="btn btn-secondary" (click)="modalService.close();">Cancel</button>
-      </div>
-    </modal>
+      </modal>
 
 
 
-    <!--Modal for filter-->
-    <modal id="filter-modal">
-      <div class="modal-header">
-        <h5 class="modal-title">Add New Customer</h5>
-        <button type="button" class="btn-close" (click)="modalService.close();"></button>
-      </div>
-      <div class="modal-body">
-        <div *ngFor="let filter of filterString; index as i">
-          <div class="d-flex mx-2 my-1">
-            <input pInputText [(ngModel)]="filterString[i]" placeholder="Filter by" class="form-control" type="text" name="tableFilter{{i}}">
-            <div class="mx-2" *ngIf="i==filterString.length-1">
-              <div *ngIf="i!=0">
-                <button type="button" class="clear-button" (click)="removeFilterOption()">
-                  <i class="bi bi-trash"></i>
+      <!--Modal for filter-->
+      <modal id="filter-modal">
+        <div class="modal-header">
+          <h5 class="modal-title">Add New Customer</h5>
+          <button type="button" class="btn-close" (click)="modalService.close();"></button>
+        </div>
+        <div class="modal-body">
+
+          <form [formGroup]="filterForm" (ngSubmit)="closeFilterModal(filterForm.values)">
+            <div class="d-flex flex-column mx-2 my-1">
+              <div class="my-1">
+                <input type="text" name="filter 1" id="filter0" class="form-control" placeholder="Filter by" formControlName="filter0">
+              </div>
+              <div class="my-1" [hidden]="filtersUsed<2">
+                <input type="text" id="filter1" name="filter 2" class="form-control" placeholder="Filter by" formControlName="filter1">
+              </div>
+              <div class="my-1" [hidden]="filtersUsed<3">
+                <input type="text" name="filter 3" id="filter2" class="form-control" placeholder="Filter by" formControlName="filter2">
+              </div>
+              <div class="mx-2">
+                <div [hidden]="filtersUsed == 1">
+                  <button type="button" class="clear-button" (click)="removeFilterOption()">
+                    <i class="bi bi-trash"></i>
+                  </button>
+                </div>
+                <button type="button" class="clear-button" (click)="addFilterOption()" [hidden]="filtersUsed==3">
+                  <i class="bi bi-plus-circle"></i>
                 </button>
               </div>
-              <button type="button" class="clear-button" (click)="addFilterOption()" *ngIf="i<=1">
-                <i class="bi bi-plus-circle"></i>
-              </button>
             </div>
+          </form>
+
+          <div>
+            <button type="submit" class="btn btn-primary my-3" (click)="closeFilterModal(filterForm.value)">
+              Filter
+            </button>
           </div>
         </div>
-        <div>
-          <button type="button" class="btn btn-primary my-3" (click)="closeFilterModal()"> Filter
-          </button>
-        </div>
-      </div>
-    </modal>
-  </ng-template>
+      </modal>
+</ng-template>
   </div>
   
 
